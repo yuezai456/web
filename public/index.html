@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Teaching</title>
+  <link rel="icon" href="<%= BASE_URL %>logo.png">
+  <script src="/js/polyfill.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-155190299-2"></script>
+  <script async src="//api.paas.plus/js/errlog.js"></script>
+
+  <script src="/js/common.js"></script>
+  <style>
+    html,
+    body,
+    #app {
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+    }
+
+    .chromeframe {
+      margin: 0.2em 0;
+      background: #ccc;
+      color: #000;
+      padding: 0.2em 0;
+    }
+
+    #loader-wrapper {
+      position: fixed;
+      top: 42%;
+      left: 42%;
+      width: 100%;
+      height: 100%;
+      z-index: 999999;
+
+    }
+
+    /* 滚动条优化 start */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f6f6f6;
+      border-radius: 2px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cdcdcd;
+      border-radius: 2px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #747474;
+    }
+
+    ::-webkit-scrollbar-corner {
+      background: #f6f6f6;
+    }
+
+    /* 滚动条优化 end */
+    .load_title {
+      font-family: 'Open Sans';
+      font-size: 14px;
+      width: 100%;
+      text-align: center;
+      z-index: 9999999999999;
+      position: absolute;
+      top: 60%;
+      opacity: 1;
+      line-height: 30px;
+    }
+
+  </style>
+  <!-- 全局配置 -->
+  <script>
+    window._CONFIG = {};
+    window._CONFIG['domianURL'] = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '') + '/api';
+    window._CONFIG['webURL'] = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+    window._CONFIG['casPrefixUrl'] = 'http://cas.example.org:8443/cas';
+    window._CONFIG['onlinePreviewDomainURL'] = 'http://fileview.jeecg.com/onlinePreview'
+    window._CONFIG['staticDomainURL'] = 'http://fileview.jeecg.com/onlinePreview'
+    window._CONFIG['pdfDomainURL'] = window._CONFIG['domianURL'] + '/sys/common/pdf/pdfPreviewIframe';
+    window._CONFIG['defaultUploadType'] = 'qiniu' //local本地 qiniu七牛
+    window._CONFIG['qn_base'] = "http://pic.1sit.cn/" //七牛云存储地址
+    //window._CONFIG['qn_base'] = "/api/sys/common/static/" //七牛云存储地址
+    window._CONFIG['qn_area'] = 'up-cn-east-2.qiniup.com' //七牛区域 z0：华东 z1：华北 z2：华南 na0：北美 as0：东南亚 cn-east-2：华东-浙江2
+    localStorage.setItem("CONFIG", JSON.stringify(window._CONFIG))
+  </script>
+</head>
+
+<body>
+  <!-- built files will be auto injected -->
+  <div id="app">
+    <div id="loader-wrapper">
+    <img src="loading.gif">
+    </div>
+  </div>
+
+</body>
+
+</html>
