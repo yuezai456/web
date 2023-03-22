@@ -71,7 +71,7 @@ module.exports = {
     port: 80,
     proxy: {
       '/api': {
-        target: 'http://1sit.cn:8080',
+        target: 'http://localhost:8080',
         // target: 'http://1.15.188.134:8088',        // target: 'http://http://49.234.36.186:8080:8088',
         ws: false,
         changeOrigin: true
