@@ -1,11 +1,28 @@
 <template>
   <div class="container">
     <h1>{{ exam.title }}</h1>
-<!--    <p>{{ exam.description }}</p>-->
-    <j-dict-select-tag type="list" style="width: 500px" v-decorator="['fileType', validatorRules.fileType]" :trigger-change="true" dictCode="file_type" placeholder="请选择试卷"/>
+    <p>{{ exam.description }}</p>
+    <select name="status" id="status" v-model="programtype">
+      <!-- 由于从接口获取的select的下拉值没有‘请选择’，所以我们要自己写一个 -->
+      <option value="">请选择语言</option>
+      <option v-for="(statusArr,index) in statusArr">{{statusArr}}</option>
+    </select>
+
+    <select name="status" id="status"v-on:change="handleSelectChange" v-model="leveltype" >
+      <!-- 由于从接口获取的select的下拉值没有‘请选择’，所以我们要自己写一个 -->
+      <option value="">请选择等级</option>
+      <option v-for="(levelTypes,index) in levelTypes">{{levelTypes}}</option>
+    </select>
+
+    <select name="status" id="status" v-model="examname">
+      <!-- 由于从接口获取的select的下拉值没有‘请选择’，所以我们要自己写一个 -->
+      <option value="">请选择编程语言和等级</option>
+      <option v-for="(examname,index) in examname">{{examname}}</option>
+    </select>
+
     <div v-for="(question, index) in exam.questions" :key="index" class="question" >
       <h2>Question {{ index + 1 }}:</h2>
-      <p class="selectors">{{ question.text }}</p>
+      <p>{{ question.text }}</p>
       <ul>
         <li v-for="(option, optionIndex) in question.options" :key="optionIndex">
           <input type="radio" :id="'q'+(index+1)+'o'+(optionIndex+1)" :value="option" v-model="answers[index]" />
@@ -19,6 +36,7 @@
 
 <script>
 import { getAction } from '@api/manage'
+import { addDictItemsCache, ajaxGetDictItems, getDictItemsFromCache } from '@api/api'
 
 export default {
   name: "Exam",
@@ -39,32 +57,18 @@ export default {
       url: {
         list: '/subject/getexamlist?id=420&type=1&index=28',
         delete: '/teaching/menu/delete',
-        deleteBatch: '/teaching/menu/deleteBatch'
+        deleteBatch: '/teaching/menu/deleteBatch',
+        getExamName:'/subject/getprogramnames',
+        getExam:'/subject/getexam?previousExamName=202009机器人四级理论综合真题',
+        getProgramTypes:'/subject/getprogramtypes',
+        getLevelTypes:'/subject/getleveltypes'
       },
-      validatorRules: {
-      fileType: {rules: [
-        {required: true, message: '请输入文件类型!'},
-      ]},
-      fileName: {rules: [
-        {required: true, message: '请输入文件名!'},
-      ]},
-      filePath: {rules: [
-        {required: true, message: '请输入文件路径!'},
-      ]},
-      fileLocation: {rules: [
-        {required: true, message: '请输入存储位置!'},
-      ]},
-      fileTag: {rules: [
-      ]},
-    },
-      URGENTLEVEL:[{
-        code:'01',
-        name:' '
-      },{
-        code:'02',
-        name:'平急'
-      }]
-    };
+      statusArr: {}, //用来接收从接口里获取出来的select下拉框里的值
+      levelTypes:{},
+      programtype:"",
+      leveltype:"",
+      examname:{},
+    }
   },
   methods: {
     submitExam() {
@@ -82,25 +86,47 @@ export default {
         .then(res => {
           this.exam.title=res.previousExamname;
           this.exam.description=res.createTime;
-          document.querySelector(".selectors").innerHTML=res.title;
-          // this.exam.questions[0].options=[res.optionA,res.optionB,res.optionC,res.optionD]
+          //document.querySelector(".selectors").innerHTML=res.title;
+          this.exam.questions.text=res.title;
+
+          //this.exam.questions[0].options=[res.optionA,res.optionB,res.optionC,res.optionD]
           if(res.answer!="0"){
             document.querySelector(".selector1").innerHTML = "A: "+res.optionA;
-
             document.querySelector(".selector2").innerHTML = "B: "+res.optionB;
             document.querySelector(".selector3").innerHTML = "C: "+res.optionC;
             document.querySelector(".selector4").innerHTML = "D: "+res.optionD;
-            console.log(res)
+            console.log("res:"+res[0].optionA)
+
           }
           else {
-            document.querySelector(".selector1").innerHTML = "对 ";
-            document.querySelector(".selector2").innerHTML = "错 ";
+            document.querySelector(".selector1").innerHTML = "对";
+            document.querySelector(".selector2").innerHTML = "错";
             document.querySelector(".selector3").innerHTML = "";
             document.querySelector(".selector4").innerHTML = "";
           }
 
         })
+    },
+    getSelectInfo(){
+      this.dataSource = []
+      this.$http.get(this.url.getProgramTypes)
+        .then(res => {
+            this.statusArr=res;
+        })
+    },getLevelTypes(){
+      this.$http.get(this.url.getLevelTypes)
+        .then(res => {
+          this.levelTypes=res;
+        })
+    },handleSelectChange(){
+      //查询试卷名称
+      this.examname= this.$http.get(this.url.getExamName+"?programtype="+this.programtype+"&leveltype="+this.leveltype)
+      console.log(this.examname);
     }
+
+  },created () {
+    this.getSelectInfo();
+    this.getLevelTypes();
   }
 };
 </script>
