@@ -20,15 +20,15 @@
     <button @click="getExam">开始</button>
     <h1>{{ exam.title }}</h1>
     <p v-html="exam.description"></p>
-
     <div  v-for="(question, index) in exam.questions" :key="index" class="question" >
-      {{index+1}}<p v-html="question.text"></p>
+      <p v-html="index+1+'.'+question.text"></p>
       <ul>
         <li v-for="(option, optionIndex) in question.options" :key="optionIndex">
           <input type="radio" :id="'q'+(index+1)+'o'+(optionIndex+1)" :value="option" v-model="answers[index]" />
-          <label :for="'q'+(index+1)+'o'+(optionIndex+1)" :class="'selector'+(optionIndex+1)" v-html="option">{{  }}</label>
+          <label v-html="optionIndex+'.'+option"></label>
         </li>
       </ul>
+      <button @click="checkAnswer(index) ">{{question.newAnswer}}</button>
     </div>
     <button @click="submitExam">提交</button>
   </div>
@@ -49,11 +49,13 @@ export default {
           {
             text: "",
             options: [],
-            answer: ""
+            answer: "",
+            newAnswer:"答案"
           }
         ]
       },
       answers: [],
+      sorts:["A","B","C","D"],
       url: {
         list: '/subject/getexam?previousExamName=',
         delete: '/teaching/menu/delete',
@@ -106,6 +108,10 @@ export default {
           this.exam=res
           console.log(this.exam)
         })
+    },checkAnswer(index){
+
+      this.exam.questions[index].newAnswer=this.exam.questions[index].answer;
+
     }
 
   },created () {
