@@ -199,8 +199,9 @@
           username:{rules: [{ required: true, message: '请输入用户名!'},{validator: this.handleUsernameOrEmail}]},
           password:{rules: [{ required: true, message: '请输入密码!',validator: 'click'}]},
           mobile:{rules: [{validator:this.validateMobile}]},
-          captcha:{rule: [{ required: true, message: '请输入验证码!'}]},
-          inputCode:{rules: [{ required: true, message: '请输入验证码!'}]}
+          //暂时不需要验证码登录
+          // captcha:{rule: [{ required: true, message: '请输入验证码!'}]},
+          // inputCode:{rules: [{ required: true, message: '请输入验证码!'}]}
         },
         verifiedCode:"",
         inputCodeContent:"",

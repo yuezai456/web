@@ -20,15 +20,14 @@
     <button @click="getExam">开始</button>
     <h1>{{ exam.title }}</h1>
     <p v-html="exam.description"></p>
-    <div  v-for="(question, index) in exam.questions" :key="index" class="question" >
-      <p v-html="index+1+'.'+question.text"></p>
+    <div  v-for="(question, index) in exam.questions" :key="index" class="question" ><p v-html="index+1+'.'+question.text"></p>
       <ul>
         <li v-for="(option, optionIndex) in question.options" :key="optionIndex">
-          <input type="radio" :id="'q'+(index+1)+'o'+(optionIndex+1)" :value="option" v-model="answers[index]" />
-          <label v-html="optionIndex+'.'+option"></label>
+            <input style="transform: scale(3.0)" type="radio" :id="'q'+(index+1)+'o'+(optionIndex+1)" :value="optionIndex" v-model="answers[index]" />
+          <label v-html="' '+optionIndex+'.'+option"></label>
         </li>
       </ul>
-      <button @click="checkAnswer(index) ">{{question.newAnswer}}</button>
+      <button v-on:click="question.display=true">答案</button><label v-show="question.display" v-html="question.answer+question.analyze"></label>
     </div>
     <button @click="submitExam">提交</button>
   </div>
@@ -50,12 +49,12 @@ export default {
             text: "",
             options: [],
             answer: "",
-            newAnswer:"答案"
+            display:false,
+            analyze:""
           }
         ]
       },
       answers: [],
-      sorts:["A","B","C","D"],
       url: {
         list: '/subject/getexam?previousExamName=',
         delete: '/teaching/menu/delete',
@@ -76,10 +75,12 @@ export default {
   methods: {
     submitExam() {
       let score = 0;
+      console.log( this.exam.questions.length)
       for (let i = 0; i < this.exam.questions.length; i++) {
         if (this.answers[i] === this.exam.questions[i].answer) {
           score++;
         }
+        console.log("anwer:"+this.answers[i]);
       }
       alert(`You scored ${score} out of ${this.exam.questions.length} questions.`);
     },
@@ -108,10 +109,6 @@ export default {
           this.exam=res
           console.log(this.exam)
         })
-    },checkAnswer(index){
-
-      this.exam.questions[index].newAnswer=this.exam.questions[index].answer;
-
     }
 
   },created () {
