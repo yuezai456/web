@@ -23,11 +23,11 @@
     <div  v-for="(question, index) in exam.questions" :key="index" class="question" ><p v-html="index+1+'.'+question.text"></p>
       <ul>
         <li v-for="(option, optionIndex) in question.options" :key="optionIndex">
-            <input style="transform: scale(3.0)" type="radio" :id="'q'+(index+1)+'o'+(optionIndex+1)" :value="optionIndex" v-model="answers[index]" />
+          <input style="transform: scale(3.0)" type="radio" :id="'q'+(index+1)+'o'+(optionIndex+1)" :value="optionIndex" v-model="answers[index]" />
           <label v-html="' '+optionIndex+'.'+option"></label>
         </li>
       </ul>
-      <button v-on:click="question.display=true">答案</button><label v-show="question.display" v-html="question.answer+question.analyze"></label>
+      <button @click="showAnswer(index)">答案</button><label :id="`answer${index}`" style="display: none" v-html="question.answer+question.analyze"></label>
     </div>
     <button @click="submitExam">提交</button>
   </div>
@@ -83,6 +83,10 @@ export default {
         console.log("anwer:"+this.answers[i]);
       }
       alert(`You scored ${score} out of ${this.exam.questions.length} questions.`);
+    },
+    showAnswer(index) {
+      // $("#answer"+index).style("");
+      document.getElementById("answer"+index).style = "";
     },
     getSelectInfo(){
       this.dataSource = []
