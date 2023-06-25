@@ -23,7 +23,7 @@
     <div  v-for="(question, index) in exam.questions" :key="index" class="question" ><p v-html="index+1+'.'+question.text"></p>
       <ul>
         <li v-for="(option, optionIndex) in question.options" :key="optionIndex">
-          <input style="transform: scale(3.0)" type="radio" :id="'q'+(index+1)+'o'+(optionIndex+1)" :value="optionIndex" v-model="answers[index]" />
+          <input style="transform: scale(2.0)" type="radio" :id="'q'+(index+1)+'o'+(optionIndex+1)" :value="optionIndex" v-model="answers[index]" />
           <label v-html="' '+optionIndex+'.'+option"></label>
         </li>
       </ul>
@@ -128,7 +128,7 @@ export default {
   max-width: 1920px;
   padding: 20px;
   font-family: Arial, sans-serif;
-  font-size: 40px;
+  /*font-size: 10px;*/
 }
 .question {
   margin-top: 20px;
